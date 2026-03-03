@@ -1,0 +1,142 @@
+@startuml Diagrama_Flujo_Cafeteria
+
+title Diagrama de Flujo - Sistema de Pedidos Cafetería\n(Basado en Requerimientos Funcionales, RNF y Reglas de Negocio)
+
+skinparam activity {
+    BackgroundColor #FEFECE
+    BorderColor #A80036
+    DiamondBackgroundColor #FFFFCC
+    DiamondBorderColor #A80036
+}
+
+|#LightBlue|Cliente|
+start
+:Acceder al sistema;
+
+|Cliente|
+:RF-01: Visualizar catálogo de productos;
+note right
+  **Should:** Interfaz fácil de usar
+  **RNF-01:** Sistema intuitivo
+  **RNF-02:** Respuesta < 3 segundos
+end note
+
+repeat
+    :Seleccionar producto;
+    
+    if (¿Agregar al carrito?) then (Sí)
+        :RF-02: Agregar producto al carrito;
+        note right
+          **RN-02:** Todo pedido debe 
+          tener al menos un producto
+        end note
+    else (No)
+    endif
+    
+    :RF-03: Ver carrito de compras;
+    
+    if (¿Modificar carrito?) then (Sí)
+        :Volver al catálogo;
+    else (No)
+    endif
+    
+repeat while (¿Seguir agregando productos?) is (Sí)
+->No;
+
+if (¿Carrito vacío?) then (Sí)
+    :Mostrar mensaje de error;
+    note right
+      **RN-01:** No se puede confirmar 
+      pedido si el carrito está vacío
+    end note
+    stop
+else (No)
+endif
+
+:RF-04: Confirmar pedido;
+note right
+  **Could:** Mensaje visual 
+  "Pedido confirmado"
+end note
+
+:Pedido registrado con estado "Recibido";
+note right
+  **RN-03:** Estado inicial = "Recibido"
+  **RNF-06:** Pedidos no se pierden
+end note
+
+|#LightGreen|Administrador|
+:RF-05: Visualizar lista de pedidos;
+note left
+  **Should:** Lista de pedidos
+  **RNF-04:** Acceso con autenticación
+end note
+
+:RF-06: Gestionar estado del pedido;
+note left
+  **RN-06:** Solo admin cambia estado
+end note
+
+if (Estado actual del pedido) then (Recibido)
+    :Cambiar a "En preparación";
+    note left
+      **RN-04:** Recibido → En preparación
+    end note
+else if (En preparación) then
+    :Cambiar a "Entregado";
+    note left
+      **RN-04:** En preparación → Entregado
+      **Could:** Mensaje "Pedido entregado"
+    end note
+else (Entregado)
+    :No se permite modificar;
+    note left
+      **RN-05:** Pedido entregado 
+      no puede modificarse
+    end note
+endif
+
+|Administrador|
+:RF-07: Gestionar productos;
+note left
+  **Should:** Editar y eliminar productos
+end note
+
+split
+    :Crear nuevo producto;
+split again
+    :Editar producto existente;
+split again
+    :Eliminar producto;
+end split
+
+stop
+
+legend right
+  **PRIORIZACIÓN MoSCoW**
+  ====
+  **Must Have (Implementado):**
+  - RF-01 a RF-07
+  - Todas las RN
+  ----
+  **Should Have:**
+  - Interfaz intuitiva (RNF-01)
+  - Respuesta < 3s (RNF-02)
+  - Lista de pedidos (RF-05)
+  - Gestión productos (RF-07)
+  - Compatibilidad navegadores (RNF-05)
+  ----
+  **Could Have:**
+  - Filtros/búsqueda productos
+  - Historial pedidos antiguos
+  - Mensajes visuales
+  - Diseño avanzado
+  ----
+  **Won't Have (v1.0):**
+  - Pagos en línea
+  - Facturación electrónica
+  - Control inventario avanzado
+  - Reportes financieros
+endlegend
+
+@enduml

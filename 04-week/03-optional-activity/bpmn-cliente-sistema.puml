@@ -1,0 +1,161 @@
+@startuml BPMN_Interaccion_Cliente_Sistema
+
+title BPMN - Interacción Cliente con Frontend y Backend\nSistema de Pedidos Cafetería
+
+skinparam swimlane {
+    BorderColor Black
+    TitleFontSize 14
+}
+
+|#FFE4B5|Cliente|
+|#87CEEB|Frontend|
+|#98FB98|Backend|
+
+|Cliente|
+start
+:Abrir aplicación web;
+
+|Frontend|
+:Cargar interfaz de usuario;
+:Solicitar catálogo de productos;
+
+|Backend|
+:Consultar base de datos;
+:Retornar lista de productos;
+
+|Frontend|
+:Renderizar catálogo;
+:Mostrar productos disponibles;
+
+|Cliente|
+:RF-01: Visualizar catálogo;
+
+repeat
+    :Seleccionar producto;
+    
+    |Frontend|
+    :Capturar selección;
+    :Validar disponibilidad local;
+    
+    |Cliente|
+    if (¿Agregar al carrito?) then (Sí)
+        |Frontend|
+        :RF-02: Agregar producto al carrito;
+        :Actualizar estado del carrito (localStorage);
+        :Mostrar notificación visual;
+        
+        |Cliente|
+        :Ver confirmación de agregado;
+    else (No)
+    endif
+    
+    |Cliente|
+repeat while (¿Seguir navegando?) is (Sí)
+->No;
+
+|Cliente|
+:RF-03: Acceder al carrito;
+
+|Frontend|
+:Mostrar resumen del carrito;
+:Calcular total;
+
+|Cliente|
+if (¿Modificar carrito?) then (Sí)
+    |Frontend|
+    :Permitir edición de cantidades;
+    :Permitir eliminar productos;
+    :Recalcular total;
+    
+    |Cliente|
+    :Confirmar cambios;
+else (No)
+endif
+
+|Frontend|
+:Validar carrito no vacío;
+note right
+  **RN-01:** No confirmar 
+  si carrito vacío
+end note
+
+if (¿Carrito válido?) then (No)
+    :Mostrar mensaje de error;
+    |Cliente|
+    :Ver error "Carrito vacío";
+    stop
+else (Sí)
+endif
+
+|Cliente|
+:RF-04: Confirmar pedido;
+
+|Frontend|
+:Recopilar datos del pedido;
+:Enviar solicitud HTTP POST;
+fork
+    :Mostrar indicador de carga;
+fork again
+    |Backend|
+    :Recibir solicitud;
+    :Validar datos del pedido;
+    
+    if (¿Datos válidos?) then (Sí)
+        :Crear registro en BD;
+        :Asignar estado "Recibido";
+        note right
+          **RN-03:** Estado inicial
+          = "Recibido"
+        end note
+        :Generar ID de pedido;
+        :Retornar respuesta exitosa;
+    else (No)
+        :Retornar error de validación;
+    endif
+end fork
+
+|Frontend|
+:Recibir respuesta del servidor;
+
+if (¿Respuesta exitosa?) then (Sí)
+    :Limpiar carrito local;
+    :Mostrar confirmación;
+    note right
+      **Could:** Mensaje visual
+      "Pedido confirmado"
+    end note
+    :Mostrar número de pedido;
+    
+    |Cliente|
+    :Ver confirmación del pedido;
+    :Recibir número de seguimiento;
+else (No)
+    :Mostrar mensaje de error;
+    
+    |Cliente|
+    :Ver error y reintentar;
+endif
+
+|Cliente|
+stop
+
+legend right
+  **Tecnologías sugeridas**
+  ====
+  **Frontend:**
+  - HTML5/CSS3/JavaScript
+  - Framework: React/Vue/Angular
+  - LocalStorage para carrito
+  ----
+  **Backend:**
+  - Spring Boot (Java)
+  - API REST
+  - Base de datos MySQL/PostgreSQL
+  ----
+  **Comunicación:**
+  - HTTP/HTTPS
+  - JSON
+  - RNF-02: Respuesta < 3 segundos
+endlegend
+
+@enduml

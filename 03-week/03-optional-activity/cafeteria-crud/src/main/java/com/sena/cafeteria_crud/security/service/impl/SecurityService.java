@@ -17,7 +17,7 @@ import com.sena.cafeteria_crud.security.dto.response.UserRoleResponseDTO;
 import com.sena.cafeteria_crud.security.model.Role;
 import com.sena.cafeteria_crud.security.model.User;
 import com.sena.cafeteria_crud.security.model.UserRole;
-import com.sena.cafeteria_crud.security.repository.ISecurityRepository;
+import com.sena.cafeteria_crud.security.repository.IUserRoleRepository;
 import com.sena.cafeteria_crud.security.repository.IUserRepository;
 import com.sena.cafeteria_crud.security.repository.IRoleRepository;
 import com.sena.cafeteria_crud.security.service.interfaces.ISecurityService;
@@ -31,7 +31,7 @@ import com.sena.cafeteria_crud.security.service.interfaces.ISecurityService;
 public class SecurityService implements ISecurityService {
 
     @Autowired
-    private ISecurityRepository securityRepository;
+    private IUserRoleRepository userRoleRepository;
 
     @Autowired
     private IUserRepository userRepository;
@@ -53,13 +53,13 @@ public class SecurityService implements ISecurityService {
         userRole.setRole(role);
         userRole.setState(userRoleRequest.getState() != null ? userRoleRequest.getState() : true);
         
-        UserRole savedUserRole = securityRepository.save(userRole);
+        UserRole savedUserRole = userRoleRepository.save(userRole);
         return convertToResponseDTO(savedUserRole);
     }
 
     @Override
     public UserRoleResponseDTO updateUserRole(Long id, UserRoleRequestDTO userRoleRequest) {
-        UserRole userRole = securityRepository.findById(id)
+        UserRole userRole = userRoleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("UserRole no encontrado con id: " + id));
         
         if (userRoleRequest.getUserId() != null) {
@@ -78,41 +78,41 @@ public class SecurityService implements ISecurityService {
             userRole.setState(userRoleRequest.getState());
         }
         
-        UserRole updatedUserRole = securityRepository.save(userRole);
+        UserRole updatedUserRole = userRoleRepository.save(userRole);
         return convertToResponseDTO(updatedUserRole);
     }
 
     @Override
     public Optional<UserRoleResponseDTO> getUserRoleById(Long id) {
-        return securityRepository.findById(id)
+        return userRoleRepository.findById(id)
                 .map(this::convertToResponseDTO);
     }
 
     @Override
     public List<UserRoleResponseDTO> getAllUserRoles() {
-        return securityRepository.findAll().stream()
+        return userRoleRepository.findAll().stream()
                 .map(this::convertToResponseDTO)
                 .toList();
     }
 
     @Override
     public List<UserRoleResponseDTO> getUserRolesByUserId(Long userId) {
-        return securityRepository.findByUserId(userId).stream()
+        return userRoleRepository.findByUserId(userId).stream()
                 .map(this::convertToResponseDTO)
                 .toList();
     }
 
     @Override
     public List<UserRoleResponseDTO> getUserRolesByRoleId(Long roleId) {
-        return securityRepository.findByRoleId(roleId).stream()
+        return userRoleRepository.findByRoleId(roleId).stream()
                 .map(this::convertToResponseDTO)
                 .toList();
     }
 
     @Override
     public boolean deleteUserRole(Long id) {
-        if (securityRepository.existsById(id)) {
-            securityRepository.deleteById(id);
+        if (userRoleRepository.existsById(id)) {
+            userRoleRepository.deleteById(id);
             return true;
         }
         return false;
