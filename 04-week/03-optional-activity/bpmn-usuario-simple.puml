@@ -1,0 +1,122 @@
+@startuml BPMN_Flujo_Cliente_Simple
+
+title Flujo de Pedido - Cafetería\n(Guía para el Cliente)
+
+skinparam activity {
+    BackgroundColor #FFFACD
+    BorderColor #8B4513
+    DiamondBackgroundColor #FFE4B5
+    DiamondBorderColor #8B4513
+    ArrowColor #8B4513
+}
+
+skinparam note {
+    BackgroundColor #E6F3FF
+    BorderColor #4A90D9
+}
+
+|#FFEFD5|🧑 Tú (Cliente)|
+
+start
+#LightGreen:🏠 **Paso 1: Entrar a la App**
+Abre la aplicación desde tu 
+navegador o celular;
+
+:📋 **Paso 2: Ver el Menú**
+Mira todos los productos 
+disponibles con sus precios;
+
+note right
+  ☕ Bebidas calientes
+  🧃 Bebidas frías  
+  🥐 Panadería
+  🍰 Postres
+end note
+
+repeat
+    :🔍 **Paso 3: Elegir Producto**
+    Selecciona lo que te gusta;
+    
+    if (¿Lo quieres agregar?) then (✅ Sí)
+        #LightBlue:🛒 **Agregar al Carrito**
+        El producto se guarda 
+        en tu lista de compra;
+    else (❌ No)
+        :Seguir viendo el menú;
+    endif
+    
+repeat while (¿Quieres algo más?) is (Sí) not (No, ya terminé)
+
+:🛒 **Paso 4: Revisar tu Carrito**
+Mira todo lo que vas a pedir;
+
+note right
+  Aquí puedes:
+  ✏️ Cambiar cantidades
+  🗑️ Quitar productos
+  💰 Ver el total
+end note
+
+if (¿Tu carrito está vacío?) then (⚠️ Sí)
+    #LightCoral:❌ No puedes hacer pedido
+    Agrega al menos un producto;
+    stop
+else (No, tiene productos)
+endif
+
+if (¿Todo está bien?) then (✅ Sí)
+    :Continuar;
+else (🔄 Quiero cambiar algo)
+    :Modificar productos;
+endif
+
+#LightGreen:✅ **Paso 5: Confirmar Pedido**
+Presiona el botón "Confirmar";
+
+:⏳ Espera un momento...
+El sistema procesa tu orden;
+
+#PaleGreen:🎉 **¡Pedido Exitoso!**
+Recibes un número de pedido;
+
+note right
+  📝 **Tu número de pedido: #0123**
+  Guárdalo para recoger tu orden
+end note
+
+:📦 **Estado: RECIBIDO**
+La cafetería ya sabe tu pedido;
+
+|#E8F5E9|☕ Cafetería|
+
+:👨‍🍳 Preparan tu pedido;
+
+:🍳 **Estado: EN PREPARACIÓN**
+Están haciendo tu orden;
+
+:✨ ¡Listo!;
+
+|🧑 Tú (Cliente)|
+
+#Gold:🚚 **Estado: ENTREGADO**
+¡Recoge tu pedido!;
+
+:😊 ¡Disfruta!;
+
+stop
+
+legend right
+  **📱 Resumen Rápido**
+  ══════════════════════
+  1️⃣ Abre la app
+  2️⃣ Mira el menú
+  3️⃣ Agrega productos
+  4️⃣ Revisa tu carrito
+  5️⃣ Confirma el pedido
+  6️⃣ Espera y recoge
+  ══════════════════════
+  💡 **Tip:** Guarda tu 
+  número de pedido
+endlegend
+
+@enduml

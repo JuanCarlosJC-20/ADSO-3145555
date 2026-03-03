@@ -1,20 +1,7 @@
  
  ### Requerimientos funcionales (RF) H
 
-RF-01: El sistema debe permitir al cliente visualizar el catálogo de productos disponibles.
-
-RF-02: El sistema debe permitir al cliente agregar productos al carrito de compras.
-
-RF-03: El sistema debe permitir al cliente visualizar el contenido del carrito.
-
-RF-04: El sistema debe permitir al cliente confirmar su pedido.
-
-RF-05: El sistema debe permitir al administrador visualizar los pedidos registrados
-
-RF-06: El sistema debe permitir al administrador cambiar el estado del pedido a recibido, en preparación o entregado.
-
-
-RF-07: El sistema debe permitir al administrador gestionar los productos (crear, editar y eliminar).
+markdown
 
 
 ### Requerimientos no funcionales (RNF) C
