@@ -35,6 +35,7 @@ public class Person {
     @Column(name = "phone", length = 20)
     private String phone;
 
+    // Campo para el estado del registro (activo/inactivo)
     @Column(name = "state", nullable = false)
     private Boolean state = true;
 
