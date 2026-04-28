@@ -1,0 +1,176 @@
+erDiagram
+    TYPE_DOCUMENT ||--o{ PERSON : "has"
+    FILE ||--o{ PERSON : "photo"
+    FILE ||--o{ PRODUCT : "image"
+    PERSON ||--o{ USER : "creates"
+    PERSON ||--o{ CUSTOMER : "is"
+    USER ||--o{ USER_ROLE : "has"
+    ROLE ||--o{ USER_ROLE : "assigned to"
+    ROLE ||--o{ ROLE_MODULE : "has"
+    MODULE ||--o{ ROLE_MODULE : "assigned to"
+    MODULE ||--o{ MODULE_VIEW : "contains"
+    VIEW ||--o{ MODULE_VIEW : "in"
+    CATEGORY ||--o{ PRODUCT : "has"
+    SUPPLIER ||--o{ PRODUCT : "supplies"
+    PRODUCT ||--o{ INVENTORY : "has"
+    PRODUCT ||--o{ ORDER_ITEM : "in"
+    PRODUCT ||--o{ INVOICE_ITEM : "in"
+    CUSTOMER ||--o{ ORDER : "places"
+    ORDER ||--o{ ORDER_ITEM : "has"
+    ORDER ||--o{ INVOICE : "generates"
+    INVOICE ||--o{ INVOICE_ITEM : "has"
+    INVOICE ||--o{ PAYMENT : "receives"
+    METHOD_PAYMENT ||--o{ PAYMENT : "via"
+
+    TYPE_DOCUMENT {
+        uuid id PK
+        string code
+        string name
+        text description
+    }
+    
+    FILE {
+        uuid id PK
+        string file_name
+        string original_name
+        string file_path
+        string mime_type
+    }
+    
+    PERSON {
+        uuid id PK
+        uuid type_document_id FK
+        string document_number
+        string first_name
+        string last_name
+        string email
+        string phone
+    }
+    
+    USER {
+        uuid id PK
+        string username
+        text password_hash
+        uuid person_id FK
+        boolean is_superuser
+    }
+    
+    ROLE {
+        uuid id PK
+        string name
+        text description
+    }
+    
+    MODULE {
+        uuid id PK
+        string code
+        string name
+        string route
+        string icon
+    }
+    
+    VIEW {
+        uuid id PK
+        string code
+        string name
+        string route
+    }
+    
+    USER_ROLE {
+        uuid user_id PK "FK"
+        uuid role_id PK "FK"
+    }
+    
+    ROLE_MODULE {
+        uuid role_id PK "FK"
+        uuid module_id PK "FK"
+    }
+    
+    MODULE_VIEW {
+        uuid module_id PK "FK"
+        uuid view_id PK "FK"
+    }
+    
+    CATEGORY {
+        uuid id PK
+        string name
+        text description
+    }
+    
+    SUPPLIER {
+        uuid id PK
+        string name
+        string tax_id
+        string contact_name
+        string phone
+        string email
+    }
+    
+    PRODUCT {
+        uuid id PK
+        string name
+        string sku
+        string barcode
+        numeric price
+        numeric cost
+        uuid category_id FK
+        uuid supplier_id FK
+    }
+    
+    INVENTORY {
+        uuid id PK
+        uuid product_id FK
+        int quantity
+        int min_quantity
+    }
+    
+    CUSTOMER {
+        uuid id PK
+        uuid person_id FK
+        string customer_code
+    }
+    
+    ORDER {
+        uuid id PK
+        string order_number
+        uuid customer_id FK
+        string status_order
+        numeric total_amount
+    }
+    
+    ORDER_ITEM {
+        uuid id PK
+        uuid order_id FK
+        uuid product_id FK
+        int quantity
+        numeric unit_price
+    }
+    
+    METHOD_PAYMENT {
+        uuid id PK
+        string code
+        string name
+    }
+    
+    INVOICE {
+        uuid id PK
+        string invoice_number
+        uuid order_id FK
+        string status_invoice
+        numeric total_amount
+    }
+    
+    INVOICE_ITEM {
+        uuid id PK
+        uuid invoice_id FK
+        uuid product_id FK
+        int quantity
+        numeric unit_price
+    }
+    
+    PAYMENT {
+        uuid id PK
+        uuid invoice_id FK
+        uuid method_payment_id FK
+        numeric amount_paid
+    }
