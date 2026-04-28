@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-  <changeSet id="2" author="Sinaí"> <!-- QUIEN ESTA HACIENDO LOS CAMBIOS EL IDENTIFICADOR -->
+  <changeSet id="1" author="Juan"> <!-- QUIEN ESTA HACIENDO LOS CAMBIOS EL IDENTIFICADOR -->
     <!-- AQUI EMPIEZA CREAR EL CAMBIO QUE SE VA REFLEJAR EN LA DB -->
     <createTable tableName="cliente"> <!-- NOMBRE DE LA ENTIDAD -->
       <!-- PRIMERA COLUMNA ID -->
@@ -17,4 +17,4 @@
     </createTable>
   </changeSet>
 
-</databaseChangeLog>
+</databaseChangeLog>s

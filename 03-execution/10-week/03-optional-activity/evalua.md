@@ -1,0 +1,2 @@
+evidencai de la semana 10 , trabajo de evaluacion repositorio con su arquitectura y manejo de ambientes :
+Repository : https://github.com/JuanCarlosJC-20/Evalua-3145555/tree/feat-evidencia-aprendizaje-14-04g
